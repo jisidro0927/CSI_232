@@ -55,15 +55,17 @@ public class L4JIsi {
     }
 
     public static <AnyType> void printAll(ArrayList<AnyType> list){
-        if (list.get(0) instanceof Shape)
-            System.out.println(list.get(0).getClass().getSuperclass().getSimpleName() + " List:");
-        else
-            System.out.println(list.get(0).getClass().getSimpleName() + " List:");
-
         for(AnyType item: list)
             System.out.println(item);
 
         System.out.println();
+    }
+
+    public static <AnyType> void printHeader(ArrayList<AnyType> list) {
+        if (list.get(0) instanceof Shape)
+            System.out.println(list.get(0).getClass().getSuperclass().getSimpleName() + " List:");
+        else
+            System.out.println(list.get(0).getClass().getSimpleName() + " List:");
     }
 
     public static <AnyType extends Comparable<? super AnyType>> void sort(ArrayList<AnyType> arr){
@@ -89,12 +91,15 @@ public class L4JIsi {
             add(randShapeArr(rand));
         }};
 
-        for(ArrayList list: arrList)
+        for(ArrayList list: arrList) {
+            printHeader(list);
             printAll(list);
+        }
 
         for(ArrayList list: arrList) {
             sort(list);
             System.out.print("Sorted ");
+            printHeader(list);
             printAll(list);
         }
     }
