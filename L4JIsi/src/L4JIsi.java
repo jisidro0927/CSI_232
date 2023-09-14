@@ -9,6 +9,41 @@ import java.util.ArrayList;
 
 public class L4JIsi {
 
+
+    public static ArrayList<Integer> randIntegerArr(Random rand){
+        return new ArrayList<>() {{
+            for(int i = 0; i < 10; i++){
+                add(rand.nextInt());
+            }
+        }};
+    }
+
+    public static ArrayList<Double> randDoubleArr(Random rand){
+        return new ArrayList<>() {{
+            for(int i = 0; i < 10; i++){
+                add(rand.nextDouble(100));
+            }
+        }};
+    }
+
+    public static ArrayList<String> randStringArr(Random rand, int letterCount){
+        return new ArrayList<>() {{
+            for(int i = 0; i < 10; i++){
+                add(randomString(letterCount));
+            }
+        }};
+    }
+
+
+    public static ArrayList<Shape> randShapeArr(Random rand){
+        return new ArrayList<>() {{
+            for(int i = 0; i < 5; i++){
+                add(new Rectangle(rand.nextDouble(100),rand.nextDouble(100)));
+                add(new Circle(rand.nextDouble(100)));
+            }
+        }};
+    }
+
     public static String randomString(int letterCount){
         Random rand = new Random();
         String word = "";
@@ -35,7 +70,7 @@ public class L4JIsi {
         for (int i = 0; i < arr.size(); i++){
             int largerItem = i;
             for (int j = i + 1; j < arr.size(); j++){
-                if (arr.get(largerItem).compareTo(arr.get(j)) == -1)
+                if (arr.get(largerItem).compareTo(arr.get(j)) < 0)
                     largerItem = j;
             }
             AnyType temp = arr.get(i);
@@ -47,36 +82,20 @@ public class L4JIsi {
     public static void main(String[] args){
         Random rand = new Random();
 
-        ArrayList<Integer> integerList = new ArrayList<>();
-        ArrayList<Double> doubleList = new ArrayList<>();
-        ArrayList<String> stringList = new ArrayList<>();
-        ArrayList<Shape> shapeList = new ArrayList<>();
+        ArrayList<ArrayList> arrList = new ArrayList<>() {{
+            add(randIntegerArr(rand));
+            add(randDoubleArr(rand));
+            add(randStringArr(rand, 8));
+            add(randShapeArr(rand));
+        }};
 
+        for(ArrayList list: arrList)
+            printAll(list);
 
-        for (int i = 0; i < 10; i++) {
-            integerList.add(rand.nextInt());
-            doubleList.add(rand.nextDouble(100));
-            stringList.add(randomString(8));
-            if (i < 5)
-                shapeList.add(new Circle(rand.nextDouble(100)));
-            else
-                shapeList.add(new Rectangle(rand.nextDouble(100), rand.nextDouble(100)));
+        for(ArrayList list: arrList) {
+            sort(list);
+            System.out.print("Sorted ");
+            printAll(list);
         }
-
-//        printAll(integerList);
-//        printAll(doubleList);
-        printAll(stringList);
-//        printAll(shapeList);
-
-        sort(integerList);
-        sort(doubleList);
-        sort(stringList);
-        sort(shapeList);
-
-//        printAll(integerList);
-//        printAll(doubleList);
-        printAll(stringList);
-//        printAll(shapeList);
-
     }
 }
