@@ -29,7 +29,7 @@ public class L4JIsi {
     public static ArrayList<String> randStringArr(Random rand, int letterCount){
         return new ArrayList<>() {{
             for(int i = 0; i < 10; i++){
-                add(randomString(letterCount));
+                add(randomString(rand, letterCount));
             }
         }};
     }
@@ -44,8 +44,7 @@ public class L4JIsi {
         }};
     }
 
-    public static String randomString(int letterCount){
-        Random rand = new Random();
+    public static String randomString(Random rand, int letterCount){
         String word = "";
 
         for(int i = 0; i < letterCount ; i++)
