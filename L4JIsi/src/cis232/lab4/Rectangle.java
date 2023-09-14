@@ -1,3 +1,5 @@
+package cis232.lab4;
+
 public class Rectangle extends Shape
 {
     public Rectangle( double len, double wid )
@@ -17,7 +19,7 @@ public class Rectangle extends Shape
     
     public String toString( )
     {
-        return "Rectangle: " + length + " " + width;
+        return "cis232.lab4.Rectangle: " + length + " " + width;
     }
     
     public double getLength( )

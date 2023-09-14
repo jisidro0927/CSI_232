@@ -1,3 +1,5 @@
+package cis232.lab4;
+
 public class Circle extends Shape
 {
     public Circle( double rad )
@@ -17,7 +19,7 @@ public class Circle extends Shape
     
     public String toString( )
     {
-        return "Circle: " + radius;
+        return "cis232.lab4.Circle: " + radius;
     }
     
     private double radius;

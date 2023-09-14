@@ -1,3 +1,4 @@
+package cis232.lab4;
 
 public abstract class Shape implements Comparable<Shape>
 {
