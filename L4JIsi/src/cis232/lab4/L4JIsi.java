@@ -1,6 +1,7 @@
 package cis232.lab4;
 import java.util.Random;
 import java.util.ArrayList;
+
 /*
     James Isidro / james_isidro@my.cuesta.edu
     CIS 232 / Scovil
