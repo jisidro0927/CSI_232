@@ -7,14 +7,13 @@
 import java.awt.*;
 import java.util.Random;
 import java.util.Scanner;
+import weiss.util.Comparator;
 
 interface ComparatorAscend<AnyType extends Point>
 {
     default int compareAscend(AnyType a, AnyType b)
     {
-        if(Math.abs(a.getX() - b.getX()) <= 0.0001)
-            return (int) (a.getY() - b.getY());
-        return (int) (a.getX() - b.getX());
+        
     }
 }
 
@@ -28,9 +27,29 @@ interface ComparatorDescend<AnyType extends Point>
     }
 }
 
-public class L5_232JIsi implements ComparatorAscend<Point>, ComparatorDescend<Point>
+public class L5_232JIsi
 {
-    public static <AnyType> void sortAscend(AnyType [] array,
+    static class Ascend implements Comparator<Point>
+    {
+        int compare(Point a, Point b)
+        {
+            if(Math.abs(a.getX() - b.getX()) <= 0.0001)
+              return (int) (a.getY() - b.getY());
+            return (int) (a.getX() - b.getX());
+        }
+    }
+    
+    static class Descend implements Comparator<Point>
+    {
+        int compare(Point a, Point b)
+        {
+            if(Math.abs(b.getX() - a.getX()) <= 0.0001)
+                return (int) (b.getY() - a.getY());
+            return (int) (b.getX() - a.getX());
+        }
+    }
+    
+    public static <AnyType> void sort(AnyType [] array,
                                             ComparatorAscend<? super AnyType> cmp)
     {
         for(int i = 0; i < array.length; i++)
@@ -39,25 +58,6 @@ public class L5_232JIsi implements ComparatorAscend<Point>, ComparatorDescend<Po
             for(int j = i + 1; j < array.length; j++)
             {
                 if(cmp.compareAscend(array[key], array[j]) > 0)
-                {
-                    key = j;
-                }
-            }
-            AnyType temp = array[i];
-            array[i] = array[key];
-            array[key] = temp;
-        }
-    }
-
-    public static <AnyType> void sortDescend(AnyType [] array,
-                                      ComparatorDescend<? super AnyType> cmp)
-    {
-        for(int i = 0; i < array.length; i++)
-        {
-            int key = i;
-            for(int j = i + 1; j < array.length; j++)
-            {
-                if(cmp.compareDescend(array[key], array[j]) > 0)
                 {
                     key = j;
                 }
@@ -102,11 +102,11 @@ public class L5_232JIsi implements ComparatorAscend<Point>, ComparatorDescend<Po
         System.out.println("Unsorted:");
         printAll(points, lineSize);
 
-        sortAscend(points, new L5_232JIsi());
+        sort(points, new Ascend());
         System.out.println("Ascending Sort:");
         printAll(points, lineSize);
 
-        sortDescend(points, new L5_232JIsi());
+        sort(points, new Descend());
         System.out.println("Descending Sort:");
         printAll(points, lineSize);
     }
