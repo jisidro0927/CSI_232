@@ -9,29 +9,11 @@ import java.util.Random;
 import java.util.Scanner;
 import weiss.util.Comparator;
 
-interface ComparatorAscend<AnyType extends Point>
-{
-    default int compareAscend(AnyType a, AnyType b)
-    {
-        
-    }
-}
-
-interface ComparatorDescend<AnyType extends Point>
-{
-    default int compareDescend(AnyType a, AnyType b)
-    {
-        if(Math.abs(b.getX() - a.getX()) <= 0.0001)
-            return (int) (b.getY() - a.getY());
-        return (int) (b.getX() - a.getX());
-    }
-}
-
 public class L5_232JIsi
 {
     static class Ascend implements Comparator<Point>
     {
-        int compare(Point a, Point b)
+        public int compare(Point a, Point b)
         {
             if(Math.abs(a.getX() - b.getX()) <= 0.0001)
               return (int) (a.getY() - b.getY());
@@ -41,7 +23,7 @@ public class L5_232JIsi
     
     static class Descend implements Comparator<Point>
     {
-        int compare(Point a, Point b)
+        public int compare(Point a, Point b)
         {
             if(Math.abs(b.getX() - a.getX()) <= 0.0001)
                 return (int) (b.getY() - a.getY());
@@ -50,14 +32,14 @@ public class L5_232JIsi
     }
     
     public static <AnyType> void sort(AnyType [] array,
-                                            ComparatorAscend<? super AnyType> cmp)
+                                            Comparator<? super AnyType> cmp)
     {
         for(int i = 0; i < array.length; i++)
         {
             int key = i;
             for(int j = i + 1; j < array.length; j++)
             {
-                if(cmp.compareAscend(array[key], array[j]) > 0)
+                if(cmp.compare(array[key], array[j]) > 0)
                 {
                     key = j;
                 }
@@ -97,6 +79,7 @@ public class L5_232JIsi
         }
 
         System.out.print("Enter Number of Points per Line: ");
+
         lineSize = scnr.nextInt();
         System.out.println();
         System.out.println("Unsorted:");
