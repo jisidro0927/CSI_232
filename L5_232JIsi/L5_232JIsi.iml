@@ -7,7 +7,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="weiss-code" level="project" />
     <orderEntry type="module" module-name="weiss-code" />
+    <orderEntry type="library" name="weiss-code" level="application" />
   </component>
 </module>
