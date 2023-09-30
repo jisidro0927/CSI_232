@@ -4,7 +4,8 @@ import weiss.util.*;
  * The ArrayList implements a growable array.
  * Insertions are always done at the end.
  */
-public class A1232JIsi<AnyType extends Comparable<? super AnyType>> extends AbstractCollection<AnyType> implements List<AnyType>
+public class A1232JIsi<AnyType extends Comparable<? super AnyType>>
+        extends AbstractCollection<AnyType> implements List<AnyType>
 {
     /**
      * Construct an empty ArrayList.
@@ -40,11 +41,13 @@ public class A1232JIsi<AnyType extends Comparable<? super AnyType>> extends Abst
         }
 
         public SubList( int from, int to )
-        {  if( from < 0 || to > A1232JIsi.this.size( ) ) throw new IllegalArgumentException( from + " " + to + " " + A1232JIsi.this.size( ) );
+        {  if( from < 0 || to > A1232JIsi.this.size( ) ) throw new
+                IllegalArgumentException( from + " " + to + " " + A1232JIsi.this.size( ) );
             original = A1232JIsi.this; offset = from; size = to - from; }
 
         public SubList( SubList sub, int from, int to )
-        { if( from < 0 || to > sub.size( ) ) throw new IllegalArgumentException( from + " " + to + " " + sub.size( ) );
+        { if( from < 0 || to > sub.size( ) ) throw new
+                IllegalArgumentException( from + " " + to + " " + sub.size( ) );
             original = sub.original; offset = sub.offset + from; size = to - from; }
 
         public int size( )
@@ -108,7 +111,18 @@ public class A1232JIsi<AnyType extends Comparable<? super AnyType>> extends Abst
         if( idx < 0 || idx >= size( ) )
             throw new ArrayIndexOutOfBoundsException( "Index " + idx + "; size " + size( ) );
         AnyType old = theItems[ idx ];
-        theItems[ idx ] = newVal;
+
+        int appIdx = appropriateIndex( newVal );
+        if( idx > appIdx )
+        {
+            for( int j = idx - 1; j >= appIdx; j-- )
+                theItems[j + 1] = theItems[j];
+        }
+        else
+            for( int j = appIdx - 1; j >= idx; j-- )
+                theItems[j + 1] = theItems[j];
+
+        theItems[ appIdx ] = newVal;
 
         return old;
     }
@@ -146,6 +160,34 @@ public class A1232JIsi<AnyType extends Comparable<? super AnyType>> extends Abst
     }
 
     /**
+     * Using Binary Searches for where the element should be inserted in the
+     * list of ascending order
+     * @param x any object
+     * @return the index of where the object is most appropriate to position
+     * within the list
+     */
+    public int appropriateIndex(AnyType x)
+    {
+        int low = 0;
+        int high = size() - 1;
+        int idx = 0;
+        while ( low <= high )
+        {
+            int mid = (low + high) / 2;
+            if( x.compareTo(theItems[mid]) <= 0) {
+                high = mid - 1;
+                idx = high;
+            }
+            else
+            {
+                low = mid + 1;
+                idx = low;
+            }
+        }
+        return idx;
+    }
+
+    /**
      * Adds an item to this collection, at the ascending order.
      * @param x any object.
      * @return true.
@@ -160,12 +202,8 @@ public class A1232JIsi<AnyType extends Comparable<? super AnyType>> extends Abst
                 theItems[ i ] = old[ i ];
         }
 
-        int i;
-        for( i = 0; i < size(); i++)
-            if( x.compareTo(theItems[i]) < 0)
-                break;
-
-        for( int j = size(); j > i; j-- )
+        int i = appropriateIndex(x);
+        for( int j = size() - 1; j >= i; j-- )
             theItems[j + 1] = theItems[j];
 
         theItems[ i ] = x;
@@ -177,8 +215,8 @@ public class A1232JIsi<AnyType extends Comparable<? super AnyType>> extends Abst
 
     public boolean addAt( AnyType x, int idx )
     {
-        if (idx < 0 || idx > size())
-            throw new IndexOutOfBoundsException();
+        if( idx < 0 || idx >= size( ) )
+            throw new ArrayIndexOutOfBoundsException( "Index " + idx + "; size " + size( ) );
 
         if( !(x.compareTo(theItems[idx]) == 0) )
             return add(x);
@@ -191,7 +229,7 @@ public class A1232JIsi<AnyType extends Comparable<? super AnyType>> extends Abst
                 theItems[ i ] = old[ i ];
         }
 
-        for (int j = size(); j > idx; j--)
+        for (int j = size() - 1; j > idx; j--)
             theItems[j + 1] = theItems[j];
 
         theItems[idx] = x;
