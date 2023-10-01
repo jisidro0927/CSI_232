@@ -11,17 +11,18 @@ public class A1232JIsi<AnyType extends Comparable<? super AnyType>>
     /**
      * Construct an empty A1232JIsi.
      */
-    public A1232JIsi( )
+    public A1232JIsi()
     {
         clear( );
     }
 
     /**
-     * Construct an A1232JIsi with same items as another Collection.
+     * Construct an A1232JIsi with same items as another Collection
+     * and Initializes with the same size.
      */
-    public A1232JIsi(Collection<? extends AnyType> other )
+    public A1232JIsi( Collection<? extends AnyType> other )
     {
-        clear( );
+        clear();
         for( AnyType obj : other )
             add( obj );
 
@@ -30,80 +31,19 @@ public class A1232JIsi<AnyType extends Comparable<? super AnyType>>
 
     /**
      * Construct an empty A1232JIsi with a specific size
-     * @param size the size of the A1232JIsi
+     * @param size of the A1232JIsi
      */
-    public A1232JIsi(int size)
+    public A1232JIsi( int size )
     {
         theSize = size;
-        theItems = (AnyType[]) new Comparable[theSize];
-    }
-
-    public Result<AnyType> getMode()
-    {
-        return new A1232JIsiResult();
-    }
-
-    /**
-     * Implementation of the Result interface that determines which
-     * item occurs the most (mode) and the count of occurrences for that item
-     */
-    private class A1232JIsiResult implements Result<AnyType>
-    {
-        private AnyType mode;
-        private int maxCount;
-        
-
-        /**
-         * returns the mode of the list
-         * @return most occurring item
-         */
-        public AnyType mode()
-        {
-            calculateModeAndCount();
-            return mode;
-        }
-
-        /**
-         * returns the count of the current mode
-         * @return the count of the current mode
-         */
-        public int count()
-        {
-            calculateModeAndCount();
-            return maxCount;
-        }
-
-        /**
-         * Calculates the Mode and counts the number of occurrences
-         */
-        public void calculateModeAndCount()
-        {
-            int count = 0;
-            maxCount = 0;
-            AnyType keyItem = theItems[0];
-            for( int i = 0; i < size(); i++)
-            {
-                if( keyItem.equals(theItems[i]) )
-                    count++;
-                else
-                {
-                    count = 0;
-                    keyItem = theItems[i];
-                }
-                if( maxCount < count )
-                {
-                    maxCount = count;
-                    mode = keyItem;
-                }
-            }
-        }
+        theItems = ( AnyType[] ) new Comparable[theSize];
     }
 
     /**
      * Returns the number of items in this collection.
      * @return the number of items in this collection.
      */
-    public int size( )
+    public int size()
     {
         return theSize;
     }
@@ -115,8 +55,9 @@ public class A1232JIsi<AnyType extends Comparable<? super AnyType>>
      */
     public AnyType get( int idx )
     {
-        if( idx < 0 || idx >= size( ) )
-            throw new ArrayIndexOutOfBoundsException( "Index " + idx + "; size " + size( ) );
+        if( idx < 0 || idx >= size() )
+            throw new ArrayIndexOutOfBoundsException( "Index " + idx
+                    + "; size " + size( ) );
         return theItems[ idx ];
     }
 
@@ -130,8 +71,9 @@ public class A1232JIsi<AnyType extends Comparable<? super AnyType>>
      */
     public AnyType set( int idx, AnyType newVal )
     {
-        if( idx < 0 || idx >= size( ) )
-            throw new ArrayIndexOutOfBoundsException( "Index " + idx + "; size " + size( ) );
+        if( idx < 0 || idx >= size() )
+            throw new ArrayIndexOutOfBoundsException( "Index " + idx
+                    + "; size " + size( ) );
         AnyType old = theItems[ idx ];
 
         int appIdx = appropriateIndex( newVal );
@@ -171,13 +113,13 @@ public class A1232JIsi<AnyType extends Comparable<? super AnyType>>
      */
     private int findPos( Object x )
     {
-        for( int i = 0; i < size( ); i++ )
+        for( int i = 0; i < size(); i++ )
             if( x == null )
             {
-                if( theItems[ i ] == null )
+                if( theItems[i] == null )
                     return i;
             }
-            else if( x.equals( theItems[ i ] ) )
+            else if( x.equals(theItems[i]) )
                 return i;
 
         return NOT_FOUND;
@@ -185,20 +127,20 @@ public class A1232JIsi<AnyType extends Comparable<? super AnyType>>
     }
 
     /**
-     * uses binary search to find index of an Item in a sorted A1232JIsi
-     * @param list or collection to conduct Binary Search on
+     * Use Binary Search to return the index of an item in a sorted A1232JIsi
+     * @param list A1232JIsi to conduct Binary Search on
      * @param item being searched for in the collection
-     * @return position of matching item in this collection or -1 if not found
+     * @return position of matching item or -1 if not found
      * @param <AnyType> must extend Comparable
      */
     public static <AnyType extends Comparable<? super AnyType>>
-            int binSearch(A1232JIsi<AnyType> list, AnyType item)
+            int binSearch( A1232JIsi<AnyType> list, AnyType item )
     {
         int low = 0;
         int high = list.size() - 1;
         while ( low <= high )
         {
-            int mid = (low + high) / 2;
+            int mid = ( low + high ) / 2;
             if( item.equals(list.get(mid)) )
                 return mid;
             if( item.compareTo(list.get(mid)) < 0)
@@ -216,7 +158,7 @@ public class A1232JIsi<AnyType extends Comparable<? super AnyType>>
      * @return the index of where the object is most appropriate to position
      * within the list
      */
-    public int appropriateIndex(AnyType x)
+    public int appropriateIndex( AnyType x )
     {
         int low = 0;
         int high = theSize - 1;
@@ -225,7 +167,7 @@ public class A1232JIsi<AnyType extends Comparable<? super AnyType>>
             int mid = (low + high) / 2;
             if( x.equals(theItems[mid]) )
                 return mid;
-            if( x.compareTo(theItems[mid]) < 0)
+            if( x.compareTo(theItems[mid]) < 0 )
                 high = mid - 1;
             else
                 low = mid + 1;
@@ -240,11 +182,11 @@ public class A1232JIsi<AnyType extends Comparable<? super AnyType>>
      */
     public boolean add( AnyType x )
     {
-        if( theItems.length == size( ) )
+        if( theItems.length == size() )
         {
-            AnyType [ ] old = theItems;
+            AnyType [] old = theItems;
             theItems = (AnyType []) new Comparable[ theItems.length * 2 + 1 ];
-            for( int i = 0; i < size( ); i++ )
+            for( int i = 0; i < size(); i++ )
                 theItems[ i ] = old[ i ];
         }
 
@@ -252,33 +194,41 @@ public class A1232JIsi<AnyType extends Comparable<? super AnyType>>
         for( int j = size() - 1; j >= i; j-- )
             theItems[j + 1] = theItems[j];
 
-        theItems[ i ] = x;
+        theItems[i] = x;
 
         theSize++;
         modCount++;
         return true;
     }
 
-    public boolean addAt( AnyType x, int idx )
+    /**
+     * adds the item at the specified index, if placement does not follow
+     * ascending order, it is added to the list like normal.
+     * @param item is any object
+     * @param idx  is requested placement of item
+     * @return true
+     */
+    public boolean addAt( AnyType item, int idx )
     {
-        if( idx < 0 || idx >= size( ) )
-            throw new ArrayIndexOutOfBoundsException( "Index " + idx + "; size " + size( ) );
+        if( idx < 0 || idx >= size() )
+            throw new ArrayIndexOutOfBoundsException( "Index " + idx
+                    + "; size " + size() );
 
-        if( !(x.compareTo(theItems[idx]) == 0) )
-            return add(x);
+        if( !(item.compareTo(theItems[idx]) == 0) )
+            return add(item);
 
-        if( theItems.length == size( ) )
+        if( theItems.length == size() )
         {
             AnyType [ ] old = theItems;
             theItems = (AnyType []) new Comparable[ theItems.length * 2 + 1 ];
-            for( int i = 0; i < size( ); i++ )
+            for( int i = 0; i < size(); i++ )
                 theItems[ i ] = old[ i ];
         }
 
         for (int j = size() - 1; j > idx; j--)
             theItems[j + 1] = theItems[j];
 
-        theItems[idx] = x;
+        theItems[idx] = item;
 
         theSize++;
         modCount++;
@@ -323,12 +273,79 @@ public class A1232JIsi<AnyType extends Comparable<? super AnyType>>
     /**
      * Change the size of this collection to zero.
      */
-    public void clear( )
+    public void clear()
     {
         theSize = 0;
         theItems = (AnyType []) new Comparable[ DEFAULT_CAPACITY ];
         modCount++;
     }
+
+    /**
+     * Creates a Result object to calculate an A1232JIsi most occurring
+     * item and the number of times it occurs.
+     * @return Result Type
+     */
+    public Result<AnyType> getMode()
+    {
+        return new A1232JIsiResult();
+    }
+
+    /**
+     * Implementation of the Result interface that determines which
+     * item occurs the most (mode) and the count of occurrences for that item.
+     */
+    private class A1232JIsiResult implements Result<AnyType>
+    {
+        private AnyType mode;
+        private int maxCount;
+
+
+        /**
+         * returns the mode of the list
+         * @return most occurring item
+         */
+        public AnyType mode()
+        {
+            calculateModeAndCount();
+            return mode;
+        }
+
+        /**
+         * Returns the count of the current mode
+         * @return the count of the current mode
+         */
+        public int count()
+        {
+            calculateModeAndCount();
+            return maxCount;
+        }
+
+        /**
+         * Calculates the Mode and counts the number of occurrences
+         */
+        public void calculateModeAndCount()
+        {
+            int count = 1;
+            maxCount = 0;
+            AnyType keyItem = theItems[0];
+            for( int i = 1; i < size(); i++ )
+            {
+                if( keyItem.equals(theItems[i]) )
+                    count++;
+                else
+                {
+                    if( maxCount < count )
+                    {
+                        maxCount = count;
+                        mode = keyItem;
+                    }
+                    count = 1;
+                    keyItem = theItems[i];
+                }
+            }
+        }
+    }
+
 
     /**
      * Obtains an Iterator object used to traverse the collection.
