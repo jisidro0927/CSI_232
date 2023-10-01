@@ -9,5 +9,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="weiss-code" />
     <orderEntry type="library" name="weiss-code" level="application" />
+    <orderEntry type="library" name="code" level="application" />
   </component>
 </module>

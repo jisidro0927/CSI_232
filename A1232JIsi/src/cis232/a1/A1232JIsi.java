@@ -1,14 +1,15 @@
+package cis232.a1;
 import weiss.util.*;
 
 /**
- * The ArrayList implements a growable array.
- * Insertions are always done at the end.
+ * The A1232JIsi implements a growable array.
+ * Insertions are always placed in ascending order.
  */
 public class A1232JIsi<AnyType extends Comparable<? super AnyType>>
         extends AbstractCollection<AnyType> implements List<AnyType>
 {
     /**
-     * Construct an empty ArrayList.
+     * Construct an empty A1232JIsi.
      */
     public A1232JIsi( )
     {
@@ -16,66 +17,86 @@ public class A1232JIsi<AnyType extends Comparable<? super AnyType>>
     }
 
     /**
-     * Construct an ArrayList with same items as another Collection.
+     * Construct an A1232JIsi with same items as another Collection.
      */
     public A1232JIsi(Collection<? extends AnyType> other )
     {
         clear( );
         for( AnyType obj : other )
             add( obj );
+
+        theSize = other.size();
     }
 
-    public A1232JIsi<AnyType> subList(int from, int to )
-    { return new SubList( from, to ); }
-
-    private class SubList extends A1232JIsi<AnyType>
+    /**
+     * Construct an empty A1232JIsi with a specific size
+     * @param size the size of the A1232JIsi
+     */
+    public A1232JIsi(int size)
     {
-        private List<AnyType> original;
-        private int offset;
-        private int size;
+        theSize = size;
+        theItems = (AnyType[]) new Comparable[theSize];
+    }
 
+    public Result<AnyType> getMode()
+    {
+        return new A1232JIsiResult();
+    }
 
-        public A1232JIsi<AnyType> subList(int from, int to )
+    /**
+     * Implementation of the Result interface that determines which
+     * item occurs the most (mode) and the count of occurrences for that item
+     */
+    private class A1232JIsiResult implements Result<AnyType>
+    {
+        private AnyType mode;
+        private int maxCount;
+        
+
+        /**
+         * returns the mode of the list
+         * @return most occurring item
+         */
+        public AnyType mode()
         {
-            return new SubList( this, from, to );
+            calculateModeAndCount();
+            return mode;
         }
 
-        public SubList( int from, int to )
-        {  if( from < 0 || to > A1232JIsi.this.size( ) ) throw new
-                IllegalArgumentException( from + " " + to + " " + A1232JIsi.this.size( ) );
-            original = A1232JIsi.this; offset = from; size = to - from; }
+        /**
+         * returns the count of the current mode
+         * @return the count of the current mode
+         */
+        public int count()
+        {
+            calculateModeAndCount();
+            return maxCount;
+        }
 
-        public SubList( SubList sub, int from, int to )
-        { if( from < 0 || to > sub.size( ) ) throw new
-                IllegalArgumentException( from + " " + to + " " + sub.size( ) );
-            original = sub.original; offset = sub.offset + from; size = to - from; }
-
-        public int size( )
-        { return size; }
-
-        public AnyType get( int idx )
-        { return original.get( offset + idx ); }
-
-        public AnyType set( int idx, AnyType x )
-        { return original.set( offset + idx, x ); }
-
-        public boolean add( AnyType x )
-        { throw new UnsupportedOperationException( ); }
-
-        public AnyType remove( int idx )
-        { throw new UnsupportedOperationException( ); }
-
-        public boolean remove( Object x )
-        { throw new UnsupportedOperationException( ); }
-
-        public boolean contains( Object x )
-        { for( AnyType item : this ) if( item.equals( x ) ) return true; return false;  }
-
-        public ListIterator<AnyType> listIterator( int idx )
-        { return original.listIterator( offset + idx ); }
-
-        public Iterator<AnyType> iterator( )
-        { return original.listIterator( offset ); }
+        /**
+         * Calculates the Mode and counts the number of occurrences
+         */
+        public void calculateModeAndCount()
+        {
+            int count = 0;
+            maxCount = 0;
+            AnyType keyItem = theItems[0];
+            for( int i = 0; i < size(); i++)
+            {
+                if( keyItem.equals(theItems[i]) )
+                    count++;
+                else
+                {
+                    count = 0;
+                    keyItem = theItems[i];
+                }
+                if( maxCount < count )
+                {
+                    maxCount = count;
+                    mode = keyItem;
+                }
+            }
+        }
     }
 
     /**
@@ -100,8 +121,9 @@ public class A1232JIsi<AnyType extends Comparable<? super AnyType>>
     }
 
     /**
-     * Changes the item at position idx.
-     * @param idx the index to change.
+     * Removes the at item at the index and places a new item in the
+     * appropriate place in the ascending list.
+     * @param idx the index to remove.
      * @param newVal the new value.
      * @return the old value.
      * @throws ArrayIndexOutOfBoundsException if index is out of range.
@@ -113,17 +135,20 @@ public class A1232JIsi<AnyType extends Comparable<? super AnyType>>
         AnyType old = theItems[ idx ];
 
         int appIdx = appropriateIndex( newVal );
-        if( idx > appIdx )
+        if( idx >= appIdx )
         {
             for( int j = idx - 1; j >= appIdx; j-- )
                 theItems[j + 1] = theItems[j];
         }
         else
-            for( int j = appIdx - 1; j >= idx; j-- )
-                theItems[j + 1] = theItems[j];
+        {
+            appIdx--;
+            for (int j = idx; j < appIdx; j++)
+                theItems[j] = theItems[j + 1];
+        }
 
         theItems[ appIdx ] = newVal;
-
+        modCount++;
         return old;
     }
 
@@ -160,6 +185,31 @@ public class A1232JIsi<AnyType extends Comparable<? super AnyType>>
     }
 
     /**
+     * uses binary search to find index of an Item in a sorted A1232JIsi
+     * @param list or collection to conduct Binary Search on
+     * @param item being searched for in the collection
+     * @return position of matching item in this collection or -1 if not found
+     * @param <AnyType> must extend Comparable
+     */
+    public static <AnyType extends Comparable<? super AnyType>>
+            int binSearch(A1232JIsi<AnyType> list, AnyType item)
+    {
+        int low = 0;
+        int high = list.size() - 1;
+        while ( low <= high )
+        {
+            int mid = (low + high) / 2;
+            if( item.equals(list.get(mid)) )
+                return mid;
+            if( item.compareTo(list.get(mid)) < 0)
+                high = mid - 1;
+            else
+                low = mid + 1;
+        }
+        return NOT_FOUND;
+    }
+
+    /**
      * Using Binary Searches for where the element should be inserted in the
      * list of ascending order
      * @param x any object
@@ -169,22 +219,18 @@ public class A1232JIsi<AnyType extends Comparable<? super AnyType>>
     public int appropriateIndex(AnyType x)
     {
         int low = 0;
-        int high = size() - 1;
-        int idx = 0;
+        int high = theSize - 1;
         while ( low <= high )
         {
             int mid = (low + high) / 2;
-            if( x.compareTo(theItems[mid]) <= 0) {
+            if( x.equals(theItems[mid]) )
+                return mid;
+            if( x.compareTo(theItems[mid]) < 0)
                 high = mid - 1;
-                idx = high;
-            }
             else
-            {
                 low = mid + 1;
-                idx = low;
-            }
         }
-        return idx;
+        return low;
     }
 
     /**
@@ -280,7 +326,7 @@ public class A1232JIsi<AnyType extends Comparable<? super AnyType>>
     public void clear( )
     {
         theSize = 0;
-        theItems = (AnyType []) new Object[ DEFAULT_CAPACITY ];
+        theItems = (AnyType []) new Comparable[ DEFAULT_CAPACITY ];
         modCount++;
     }
 
@@ -290,7 +336,7 @@ public class A1232JIsi<AnyType extends Comparable<? super AnyType>>
      */
     public Iterator<AnyType> iterator( )
     {
-        return new ArrayListIterator( 0 );
+        return new A1232JIsiIterator( 0 );
     }
     /**
      * Obtains a ListIterator object used to traverse the collection bidirectionally.
@@ -301,22 +347,22 @@ public class A1232JIsi<AnyType extends Comparable<? super AnyType>>
      */
     public ListIterator<AnyType> listIterator( int idx )
     {
-        return new ArrayListIterator( idx );
+        return new A1232JIsiIterator( idx );
     }
 
     /**
-     * This is the implementation of the ArrayListIterator.
+     * This is the implementation of the A1232JIsiIterator.
      * It maintains a notion of a current position and of
-     * course the implicit reference to the ArrayList.
+     * course the implicit reference to the A1232JIsi.
      */
-    private class ArrayListIterator implements ListIterator<AnyType>
+    private class A1232JIsiIterator implements ListIterator<AnyType>
     {
         private int current;
         private int expectedModCount = modCount;
         private boolean nextCompleted = false;
         private boolean prevCompleted = false;
 
-        ArrayListIterator( int pos )
+        A1232JIsiIterator(int pos )
         {
             if( pos < 0 || pos > size( ) )
                 throw new IndexOutOfBoundsException( );
