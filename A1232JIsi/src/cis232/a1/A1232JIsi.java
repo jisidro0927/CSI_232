@@ -152,11 +152,11 @@ public class A1232JIsi<AnyType extends Comparable<? super AnyType>>
     }
 
     /**
-     * Using Binary Searches for where the element should be inserted in the
-     * list of ascending order
+     * Using Binary Searches for where the element should be inserted in a
+     * collection of ascending order (Note: the element in the appropriate index
+     * will always be greater than or equal to the new element.)
      * @param x any object
      * @return the index of where the object is most appropriate to position
-     * within the list
      */
     public int appropriateIndex( AnyType x )
     {
