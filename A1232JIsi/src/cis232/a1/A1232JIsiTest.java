@@ -7,9 +7,9 @@ class A1232JIsiTest {
     @Test
     void testAdd() {
         A1232JIsi<Integer> list = new A1232JIsi<>();
-        assertTrue(list.add(1));
-        assertTrue(list.add(3));
-        assertTrue(list.add(2));
+        assertTrue(list.add(null));
+        assertTrue(list.add(null));
+        assertTrue(list.add(null));
         assertEquals(3, list.size());
     }
 
