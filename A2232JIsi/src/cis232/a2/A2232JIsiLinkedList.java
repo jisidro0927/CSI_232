@@ -80,7 +80,6 @@ public class A2232JIsiLinkedList<AnyType extends Comparable<? super AnyType>>
      */
     public void add(AnyType x)
     {
-
         if (x == null)
         {
             LinkedListIterator<AnyType> itr = first();
@@ -92,15 +91,9 @@ public class A2232JIsiLinkedList<AnyType extends Comparable<? super AnyType>>
             return;
         }
 
-        if( isEmpty() )
-        {
-            header.next = new ListNode<>( x, header.next);
-            return;
-        }
-
         LinkedListIterator<AnyType> itr = zeroth();
 
-        while (itr.isValid() && itr.current.next != null &&
+        while (itr.current.next != null &&
                 itr.current.next.element.compareTo(x) < 0)
         {
             itr.advance();
@@ -277,7 +270,7 @@ public class A2232JIsiLinkedList<AnyType extends Comparable<? super AnyType>>
     }
 
     /**
-     * Implementation of Result class to get mode and count of a list
+     * Implementation of Result class to store mode and count of a list
      */
     class A2232JIsiLinkedListResult implements Result<AnyType>
     {
@@ -290,7 +283,6 @@ public class A2232JIsiLinkedList<AnyType extends Comparable<? super AnyType>>
         @Override
         public AnyType mode()
         {
-
             return mode;
         }
 
@@ -332,7 +324,7 @@ public class A2232JIsiLinkedList<AnyType extends Comparable<? super AnyType>>
 
         for( i = 0; i < 10; i++ )
         {
-            theList.add(rnd.nextInt(10) + 1);
+            theList.add(rnd.nextInt(10));
             theList.showList( );
             theItr.advance( );
         }
@@ -346,7 +338,7 @@ public class A2232JIsiLinkedList<AnyType extends Comparable<? super AnyType>>
                 System.out.println( "Find fails!" );
 
         System.out.println( "Finished deletions" );
-        theList.showList( 2 );
+        theList.showList(rnd.nextInt(5)+1);
         System.out.println( "Size: " + listSize( theList ) );
 
     }
