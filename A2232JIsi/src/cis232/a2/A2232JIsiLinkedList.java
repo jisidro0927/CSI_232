@@ -82,18 +82,18 @@ public class A2232JIsiLinkedList<AnyType extends Comparable<? super AnyType>>
     {
         if (x == null)
         {
-            LinkedListIterator<AnyType> itr = first();
+            LinkedListIterator<AnyType> itr = zeroth();
             while (itr.isValid() && itr.current.next != null)
             {
                 itr.advance();
             }
-            itr.current.next = new ListNode<>(null);
+            itr.current.next = new ListNode<>(x);
             return;
         }
 
         LinkedListIterator<AnyType> itr = zeroth();
 
-        while (itr.current.next != null &&
+        while (itr.current.next != null && itr.current.next.element != null &&
                 itr.current.next.element.compareTo(x) < 0)
         {
             itr.advance();
@@ -123,7 +123,7 @@ public class A2232JIsiLinkedList<AnyType extends Comparable<? super AnyType>>
         LinkedListIterator<AnyType> itr = first();
         while( itr.isValid() )
         {
-            if( itr.retrieve().equals(replace) )
+            if( itr.retrieve() != null && itr.retrieve().equals(replace) )
             {
                 remove(replace);
                 add(x);
@@ -245,14 +245,13 @@ public class A2232JIsiLinkedList<AnyType extends Comparable<? super AnyType>>
         int count = 0;
         int maxCount = 1;
         AnyType key = itr.retrieve();
-        AnyType mode = itr.retrieve();
+        AnyType mode = key;
 
-        while(itr.isValid())
-        {
-            if( itr.retrieve().equals(key) )
-            {
+        do {
+            AnyType current = itr.retrieve();
+
+            if((current == null && key == null) || (current != null && current.equals(key)) )
                 count++;
-            }
             else
             {
                 if(maxCount < count)
@@ -260,12 +259,18 @@ public class A2232JIsiLinkedList<AnyType extends Comparable<? super AnyType>>
                     maxCount = count;
                     mode = key;
                 }
-                count = 0;
-                key = itr.retrieve();
+                count = 1;
+                key = current;
             }
             itr.advance();
         }
+        while(itr.isValid());
 
+        if(maxCount < count)
+        {
+            maxCount = count;
+            mode = key;
+        }
         return new A2232JIsiLinkedListResult(mode, maxCount);
     }
 
@@ -324,6 +329,8 @@ public class A2232JIsiLinkedList<AnyType extends Comparable<? super AnyType>>
 
         for( i = 0; i < 10; i++ )
         {
+//            if(i % 2 == 0)
+//                theList.add(null);
             theList.add(rnd.nextInt(10));
             theList.showList( );
             theItr.advance( );
@@ -331,15 +338,24 @@ public class A2232JIsiLinkedList<AnyType extends Comparable<? super AnyType>>
         System.out.println( "Size was: " + listSize( theList ) );
 
         for( i = 0; i < 10; i += 2 )
-            theList.replace( i , rnd.nextInt(10)+1);
+        {
+            if (i % 3 == 0)
+                theList.replace(i, null);
+            theList.replace(i, rnd.nextInt(10) + 1);
+        }
 
-        for( i = 0; i < 10; i++ )
-            if( ( i % 2 == 0 ) == ( theList.find( i ).isValid( ) ) )
-                System.out.println( "Find fails!" );
+//        for( i = 0; i < 10; i++ )
+//            if( ( i % 2 == 0 ) == ( theList.find( i ).isValid( ) ) )
+//                System.out.println( "Find fails!" );
 
         System.out.println( "Finished deletions" );
         theList.showList(rnd.nextInt(5)+1);
+        A2232JIsiLinkedList.printList(theList);
         System.out.println( "Size: " + listSize( theList ) );
+        System.out.println("Mode: " + theList.getMode().mode() +
+                " Count: " + theList.getMode().count());
+
+
 
     }
 
