@@ -1,3 +1,5 @@
+package cis232.a2;
+
 // Basic node stored in a linked list
 // Note that this class is not accessible outside
 // of package weiss.nonstandard

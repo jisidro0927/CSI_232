@@ -160,6 +160,11 @@ public class A1232JIsi<AnyType extends Comparable<? super AnyType>>
      */
     public int appropriateIndex( AnyType x )
     {
+        if ( x == null )
+        {
+            return theSize - 1;
+        }
+
         int low = 0;
         int high = theSize - 1;
         while ( low <= high )
@@ -281,13 +286,33 @@ public class A1232JIsi<AnyType extends Comparable<? super AnyType>>
     }
 
     /**
-     * Creates a Result object to calculate an A1232JIsi most occurring
+     * Creates a Result object and calculates an A1232JIsi most occurring
      * item and the number of times it occurs.
      * @return Result Type
      */
     public Result<AnyType> getMode()
     {
-        return new A1232JIsiResult();
+        int count = 1;
+        int maxCount = 0;
+        AnyType mode = theItems[0];
+        AnyType keyItem = theItems[0];
+
+        for( int i = 1; i < size(); i++ )
+        {
+            if( keyItem.equals(theItems[i]) )
+                count++;
+            else
+            {
+                if( maxCount < count )
+                {
+                    maxCount = count;
+                    mode = keyItem;
+                }
+                count = 1;
+                keyItem = theItems[i];
+            }
+        }
+        return new A1232JIsiResult(mode, count);
     }
 
     /**
@@ -297,16 +322,21 @@ public class A1232JIsi<AnyType extends Comparable<? super AnyType>>
     private class A1232JIsiResult implements Result<AnyType>
     {
         private AnyType mode;
-        private int maxCount;
+        private int count;
 
+        public A1232JIsiResult(AnyType newMode, int newCount)
+        {
+            mode = newMode;
+            count = newCount;
+        }
 
         /**
          * returns the mode of the list
          * @return most occurring item
          */
+        @Override
         public AnyType mode()
         {
-            calculateModeAndCount();
             return mode;
         }
 
@@ -314,35 +344,10 @@ public class A1232JIsi<AnyType extends Comparable<? super AnyType>>
          * Returns the count of the current mode
          * @return the count of the current mode
          */
+        @Override
         public int count()
         {
-            calculateModeAndCount();
-            return maxCount;
-        }
-
-        /**
-         * Calculates the Mode and counts the number of occurrences
-         */
-        public void calculateModeAndCount()
-        {
-            int count = 1;
-            maxCount = 0;
-            AnyType keyItem = theItems[0];
-            for( int i = 1; i < size(); i++ )
-            {
-                if( keyItem.equals(theItems[i]) )
-                    count++;
-                else
-                {
-                    if( maxCount < count )
-                    {
-                        maxCount = count;
-                        mode = keyItem;
-                    }
-                    count = 1;
-                    keyItem = theItems[i];
-                }
-            }
+            return count;
         }
     }
 

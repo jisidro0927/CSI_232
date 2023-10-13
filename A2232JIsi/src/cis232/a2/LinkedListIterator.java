@@ -1,3 +1,5 @@
+package cis232.a2;
+
 // LinkedListIterator class; maintains "current position"
 //
 // CONSTRUCTION: Package visible only, with a ListNode

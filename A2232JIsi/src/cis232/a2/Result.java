@@ -1,3 +1,5 @@
+package cis232.a2;
+
 /**
  *
  * @author R

@@ -1,3 +1,7 @@
+package cis232.a2;
+
+import java.util.Random;
+
 // LinkedList class
 //
 // CONSTRUCTION: with no initializer
@@ -71,36 +75,37 @@ public class A2232JIsiLinkedList<AnyType extends Comparable<? super AnyType>>
     }
 
     /**
-     * Adds an item in ascending order, places null objects at the end
-     * @param x item to add
+     * Adds an item in ascending order, ignores null objects
+     * @param x item to add on list
      */
     public void add(AnyType x)
     {
-        LinkedListIterator<AnyType> itr = first();
+
+        if (x == null)
+        {
+            LinkedListIterator<AnyType> itr = first();
+            while (itr.isValid() && itr.current.next != null)
+            {
+                itr.advance();
+            }
+            itr.current.next = new ListNode<>(null);
+            return;
+        }
 
         if( isEmpty() )
         {
             header.next = new ListNode<>( x, header.next);
+            return;
         }
 
-        else if( x == null )
-        {
-            while(itr.isValid())
-            {
-                itr.advance();
-            }
-            itr.current.next = new ListNode<>(x,itr.current.next);
-        }
+        LinkedListIterator<AnyType> itr = zeroth();
 
-        else
+        while (itr.isValid() && itr.current.next != null &&
+                itr.current.next.element.compareTo(x) < 0)
         {
-            while (itr.isValid() && itr.current.next != null &&
-                    itr.current.next.element.compareTo(x) < 0)
-            {
-                itr.advance();
-            }
-            itr.current.next = new ListNode<>(x,itr.current.next);
+            itr.advance();
         }
+        itr.current.next = new ListNode<>(x,itr.current.next);
     }
 
     /**
@@ -125,7 +130,7 @@ public class A2232JIsiLinkedList<AnyType extends Comparable<? super AnyType>>
         LinkedListIterator<AnyType> itr = first();
         while( itr.isValid() )
         {
-            if( itr.current.element.equals(replace) )
+            if( itr.retrieve().equals(replace) )
             {
                 remove(replace);
                 add(x);
@@ -205,10 +210,11 @@ public class A2232JIsiLinkedList<AnyType extends Comparable<? super AnyType>>
             LinkedListIterator<AnyType> itr = first();
             while( itr.isValid() )
             {
-                System.out.println( itr.retrieve() );
+                System.out.println( itr.current.element );
                 itr.advance();
             }
         }
+        System.out.println();
     }
 
     // Print list with a set amount of items perLine
@@ -228,6 +234,8 @@ public class A2232JIsiLinkedList<AnyType extends Comparable<? super AnyType>>
                 itr.advance();
             }
         }
+
+        System.out.println();
     }
 
     public void author()
@@ -235,12 +243,54 @@ public class A2232JIsiLinkedList<AnyType extends Comparable<? super AnyType>>
         System.out.println("James Luke C. Isidro");
     }
 
+    public Result<AnyType> getMode()
+    {
+        if( isEmpty() )
+            return new A2232JIsiLinkedListResult(null, 0);
+
+        LinkedListIterator<AnyType> itr = first();
+        int count = 0;
+        int maxCount = 1;
+        AnyType key = itr.retrieve();
+        AnyType mode = itr.retrieve();
+
+        while(itr.isValid())
+        {
+            if( itr.retrieve().equals(key) )
+            {
+                count++;
+            }
+            else
+            {
+                if(maxCount < count)
+                {
+                    maxCount = count;
+                    mode = key;
+                }
+                count = 0;
+                key = itr.retrieve();
+            }
+            itr.advance();
+        }
+
+        return new A2232JIsiLinkedListResult(mode, maxCount);
+    }
+
+    /**
+     * Implementation of Result class to get mode and count of a list
+     */
     class A2232JIsiLinkedListResult implements Result<AnyType>
     {
+        public A2232JIsiLinkedListResult(AnyType newMode, int newCount)
+        {
+            mode = newMode;
+            count = newCount;
+        }
 
         @Override
         public AnyType mode()
         {
+
             return mode;
         }
 
@@ -275,27 +325,30 @@ public class A2232JIsiLinkedList<AnyType extends Comparable<? super AnyType>>
         A2232JIsiLinkedList<Integer> theList = new A2232JIsiLinkedList<Integer>( );
         LinkedListIterator<Integer> theItr;
         int i;
+        Random rnd = new Random();
 
         theItr = theList.zeroth( );
-        printList( theList );
+        theList.showList();
 
         for( i = 0; i < 10; i++ )
         {
-            theList.insert( i , theItr );
-            printList( theList );
+            theList.add(rnd.nextInt(10) + 1);
+            theList.showList( );
             theItr.advance( );
         }
         System.out.println( "Size was: " + listSize( theList ) );
 
         for( i = 0; i < 10; i += 2 )
-            theList.remove( i );
+            theList.replace( i , rnd.nextInt(10)+1);
 
         for( i = 0; i < 10; i++ )
             if( ( i % 2 == 0 ) == ( theList.find( i ).isValid( ) ) )
                 System.out.println( "Find fails!" );
 
         System.out.println( "Finished deletions" );
-        printList( theList );
+        theList.showList( 2 );
+        System.out.println( "Size: " + listSize( theList ) );
+
     }
 
 }

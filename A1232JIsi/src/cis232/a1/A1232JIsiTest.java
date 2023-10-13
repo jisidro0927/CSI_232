@@ -13,6 +13,7 @@ class A1232JIsiTest {
         assertEquals(3, list.size());
     }
 
+
     @Test
     void testGet() {
         A1232JIsi<Integer> list = new A1232JIsi<>();
@@ -43,6 +44,20 @@ class A1232JIsiTest {
         list.add(10);
         int result = list.appropriateIndex(2);
         assertEquals(0, result);
+    }
+
+    @Test
+    public void test_appropriateIndexNullElement() {
+        A1232JIsi<Integer> list = new A1232JIsi<>();
+        list.add(1);
+        list.add(3);
+        list.add(5);
+        list.add(7);
+        list.add(9);
+
+        int index = list.appropriateIndex(null);
+
+        assertEquals(4, index);
     }
 
     @Test
