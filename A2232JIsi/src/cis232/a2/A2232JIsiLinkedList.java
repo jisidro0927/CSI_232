@@ -355,8 +355,6 @@ public class A2232JIsiLinkedList<AnyType extends Comparable<? super AnyType>>
         System.out.println("Mode: " + theList.getMode().mode() +
                 " Count: " + theList.getMode().count());
 
-
-
     }
 
 }
