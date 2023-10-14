@@ -231,9 +231,9 @@ public class A2232JIsiLinkedList<AnyType extends Comparable<? super AnyType>>
         System.out.println();
     }
 
-    public void author()
+    public String author()
     {
-        System.out.println("James Luke C. Isidro");
+        return "James Luke C. Isidro";
     }
 
     public Result<AnyType> getMode()
