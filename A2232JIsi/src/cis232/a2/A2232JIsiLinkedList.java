@@ -80,9 +80,9 @@ public class A2232JIsiLinkedList<AnyType extends Comparable<? super AnyType>>
      */
     public void add(AnyType x)
     {
+        LinkedListIterator<AnyType> itr = zeroth();
         if (x == null)
         {
-            LinkedListIterator<AnyType> itr = zeroth();
             while (itr.isValid() && itr.current.next != null)
             {
                 itr.advance();
@@ -90,8 +90,6 @@ public class A2232JIsiLinkedList<AnyType extends Comparable<? super AnyType>>
             itr.current.next = new ListNode<>(x);
             return;
         }
-
-        LinkedListIterator<AnyType> itr = zeroth();
 
         while (itr.current.next != null && itr.current.next.element != null &&
                 itr.current.next.element.compareTo(x) < 0)
