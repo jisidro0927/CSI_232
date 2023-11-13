@@ -1,0 +1,29 @@
+Data: 1               Height: 0            Balance: 0            Status: Active  
+        Left: null                                         
+        Right: null                                         
+Data: 5               Height: 1            Balance: -1           Status: Active  
+        Left: Data: 1                                      
+        Right: null                                         
+Data: 10              Height: 2            Balance: -1           Status: Active  
+        Left: Data: 5                                      
+        Right: Data: 15                                     
+        Duplicate: Data: 10              Height: 0            Balance: 0            Status: Active  
+        Duplicate: Data: 10              Height: 0            Balance: 0            Status: Active  
+Data: 15              Height: 0            Balance: 0            Status: Inactive
+        Left: null                                         
+        Right: null                                         
+Data: 20              Height: 3            Balance: -1           Status: Inactive
+        Left: Data: 10                                     
+        Right: Data: 30                                     
+Data: 25              Height: 0            Balance: 0            Status: Inactive
+        Left: null                                         
+        Right: null                                         
+        Duplicate: Data: 25              Height: 0            Balance: 0            Status: Inactive
+        Duplicate: Data: 25              Height: 0            Balance: 0            Status: Active  
+        Duplicate: Data: 25              Height: 0            Balance: 0            Status: Active  
+Data: 30              Height: 1            Balance: 0            Status: Active  
+        Left: Data: 25                                     
+        Right: Data: 35                                     
+Data: 35              Height: 0            Balance: 0            Status: Active  
+        Left: null                                         
+        Right: null                                         
