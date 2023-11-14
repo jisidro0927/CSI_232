@@ -27,7 +27,7 @@ import java.util.List;
  * Note that all "matching" is based on the compareTo method.
  * @author Mark Allen Weiss
  */
-public class AvlTreeConcrete<AnyType extends Comparable<? super AnyType>>
+public class A1233JIsiAVL<AnyType extends Comparable<? super AnyType>>
 {
     private AnyType   currentMode;
     private int       modeCount;
@@ -37,7 +37,7 @@ public class AvlTreeConcrete<AnyType extends Comparable<? super AnyType>>
     /**
      * Construct the tree.
      */
-    public AvlTreeConcrete( )
+    public A1233JIsiAVL( )
     {
         root = null;
     }
@@ -75,7 +75,7 @@ public class AvlTreeConcrete<AnyType extends Comparable<? super AnyType>>
      * @param t the node that roots the subtree.
      * @return the new root of the subtree.
      */
-    private AvlNode<AnyType> remove( AnyType x, AvlNode<AnyType> t )
+    private A1233JIsiAvlNode<AnyType> remove(AnyType x, A1233JIsiAvlNode<AnyType> t )
     {
         if( t == null )
             return t;
@@ -91,14 +91,14 @@ public class AvlTreeConcrete<AnyType extends Comparable<? super AnyType>>
             {
                 t.isActive = false;
             }
-            AvlNode<AnyType> current = t.next;
-            AvlNode<AnyType> previous = t;
-            while (current != null) {
-                if (current.isActive && current.element.equals(x)) {
+            A1233JIsiAvlNode<AnyType> current = t.next;
+            while (current != null)
+            {
+                if (current.isActive && current.element.equals(x))
+                {
                     current.isActive = false;
                     break;
                 }
-                previous = current;
                 current = current.next;
             }
         }
@@ -112,19 +112,21 @@ public class AvlTreeConcrete<AnyType extends Comparable<? super AnyType>>
      * @param t the node that roots the subtree.
      * @return the new root of the subtree.
      */
-    private AvlNode<AnyType> removeAll(AvlNode<AnyType> t, AnyType key) {
+    private A1233JIsiAvlNode<AnyType> removeAll(A1233JIsiAvlNode<AnyType> t, AnyType key) {
         if (t == null) return null;
 
         int compareResult = key.compareTo(t.element);
 
-        if (compareResult < 0) {
+        if (compareResult < 0)
             t.left = removeAll(t.left, key);
-        } else if (compareResult > 0) {
+        else if (compareResult > 0)
             t.right = removeAll(t.right, key);
-        } else {
+        else
+        {
             t.isActive = false;
-            AvlNode<AnyType> current = t.next;
-            while (current != null) {
+            A1233JIsiAvlNode<AnyType> current = t.next;
+            while (current != null)
+            {
                 current.isActive = false;
                 current = current.next;
             }
@@ -138,9 +140,9 @@ public class AvlTreeConcrete<AnyType extends Comparable<? super AnyType>>
      */
     public AnyType findMin( )
     {
-        if( isEmpty( ) ) {
+        if( isEmpty( ) )
             throw new UnderflowException();
-        }
+
         return findMin( root ).element;
     }
 
@@ -212,11 +214,11 @@ public class AvlTreeConcrete<AnyType extends Comparable<? super AnyType>>
             System.out.println("The tree is currently empty.");
         else
         {
-            if (ascending) {
+            if (ascending)
                 printBalTreeAscending(root);
-            } else {
+            else
                 printBalTreeDescending(root);
-            }
+
         }
 
     }
@@ -230,12 +232,12 @@ public class AvlTreeConcrete<AnyType extends Comparable<? super AnyType>>
         {
             if (isEmpty())
                 writer.println("The tree is currently empty.");
-            else {
-                if (ascending) {
+            else
+            {
+                if (ascending)
                     writeBalTreeAscending(root, writer);
-                } else {
+                else
                     writeBalTreeDescending(root, writer);
-                }
             }
         }
         catch (IOException e)
@@ -246,7 +248,7 @@ public class AvlTreeConcrete<AnyType extends Comparable<? super AnyType>>
 
     private static final int ALLOWED_IMBALANCE = 1;
 
-    private AvlNode<AnyType> balance( AvlNode<AnyType> t )
+    private A1233JIsiAvlNode<AnyType> balance(A1233JIsiAvlNode<AnyType> t )
     {
         if( t == null )
             return t;
@@ -256,8 +258,7 @@ public class AvlTreeConcrete<AnyType extends Comparable<? super AnyType>>
                 t = rotateWithLeftChild( t );
             else
                 t = doubleWithLeftChild( t );
-        else
-        if( height( t.right ) - height( t.left ) > ALLOWED_IMBALANCE )
+        else if( height( t.right ) - height( t.left ) > ALLOWED_IMBALANCE )
             if( height( t.right.right ) >= height( t.right.left ) )
                 t = rotateWithRightChild( t );
             else
@@ -272,7 +273,7 @@ public class AvlTreeConcrete<AnyType extends Comparable<? super AnyType>>
         checkBalance( root );
     }
 
-    private int checkBalance( AvlNode<AnyType> t )
+    private int checkBalance( A1233JIsiAvlNode<AnyType> t )
     {
         if( t == null )
             return -1;
@@ -296,10 +297,10 @@ public class AvlTreeConcrete<AnyType extends Comparable<? super AnyType>>
      * @param t the node that roots the subtree.
      * @return the new root of the subtree.
      */
-    private AvlNode<AnyType> insert( AnyType x, AvlNode<AnyType> t )
+    private A1233JIsiAvlNode<AnyType> insert(AnyType x, A1233JIsiAvlNode<AnyType> t )
     {
         if( t == null )
-            return new AvlNode<>( x, null, null, null);
+            return new A1233JIsiAvlNode<>( x, null, null, null);
 
         int compareResult = x.compareTo( t.element );
 
@@ -308,15 +309,8 @@ public class AvlTreeConcrete<AnyType extends Comparable<? super AnyType>>
         else if( compareResult > 0 )
             t.right = insert( x, t.right );
         else
-        {
-            if (!t.isActive)
-            {
-                t.isActive = true;
-                t.element = x;
-            }
-            else
-                t.next = new AvlNode<>(x, null, null, t.next);
-        }
+            t.next = new A1233JIsiAvlNode<>(x, null, null, t.next);
+
         return balance( t );
     }
 
@@ -325,7 +319,7 @@ public class AvlTreeConcrete<AnyType extends Comparable<? super AnyType>>
      * @param t the node that roots the tree.
      * @return node containing the smallest item.
      */
-    private AvlNode<AnyType> findMin( AvlNode<AnyType> t )
+    private A1233JIsiAvlNode<AnyType> findMin(A1233JIsiAvlNode<AnyType> t )
     {
         if( t == null )
             return null;
@@ -336,7 +330,7 @@ public class AvlTreeConcrete<AnyType extends Comparable<? super AnyType>>
                 return t;
             else
             {
-                AvlNode<AnyType> current = t.next;
+                A1233JIsiAvlNode<AnyType> current = t.next;
                 while (current != null && !current.isActive)
                 {
                     current = current.next;
@@ -353,7 +347,7 @@ public class AvlTreeConcrete<AnyType extends Comparable<? super AnyType>>
      * @param t the node that roots the tree.
      * @return node containing the largest item.
      */
-    private AvlNode<AnyType> findMax( AvlNode<AnyType> t )
+    private A1233JIsiAvlNode<AnyType> findMax(A1233JIsiAvlNode<AnyType> t )
     {
         if( t == null )
             return null;
@@ -364,7 +358,7 @@ public class AvlTreeConcrete<AnyType extends Comparable<? super AnyType>>
                 return t;
             else
             {
-                AvlNode<AnyType> current = t.next;
+                A1233JIsiAvlNode<AnyType> current = t.next;
                 while (current != null && !current.isActive)
                 {
                     current = current.next;
@@ -382,7 +376,7 @@ public class AvlTreeConcrete<AnyType extends Comparable<? super AnyType>>
      * @param t the node that roots the tree.
      * @return true if x is found in subtree.
      */
-    private boolean contains( AnyType x, AvlNode<AnyType> t )
+    private boolean contains( AnyType x, A1233JIsiAvlNode<AnyType> t )
     {
         while( t != null )
         {
@@ -405,7 +399,8 @@ public class AvlTreeConcrete<AnyType extends Comparable<? super AnyType>>
      * @param key The value to find within the tree.
      * @param resultList The list to collect matching nodes' values.
      */
-    private void findAll(AvlNode<AnyType> t, AnyType key, List<AnyType> resultList) {
+    private void findAll(A1233JIsiAvlNode<AnyType> t, AnyType key, List<AnyType> resultList)
+    {
         if (t == null)
             return;
 
@@ -424,7 +419,7 @@ public class AvlTreeConcrete<AnyType extends Comparable<? super AnyType>>
             if (t.isActive)
                 resultList.add(t.element);
 
-            AvlNode<AnyType> current = t.next;
+            A1233JIsiAvlNode<AnyType> current = t.next;
             while (current != null)
             {
                 if (current.isActive)
@@ -438,7 +433,7 @@ public class AvlTreeConcrete<AnyType extends Comparable<? super AnyType>>
      * Internal method to print a subtree in sorted order.
      * @param t the node that roots the tree.
      */
-    private void printTree( AvlNode<AnyType> t )
+    private void printTree( A1233JIsiAvlNode<AnyType> t )
     {
         if( t != null )
         {
@@ -446,7 +441,7 @@ public class AvlTreeConcrete<AnyType extends Comparable<? super AnyType>>
             if (t.isActive)
             {
                 System.out.println(t.element);
-                AvlNode<AnyType> current = t.next;
+                A1233JIsiAvlNode<AnyType> current = t.next;
                 while (current != null)
                 {
                     if (current.isActive)
@@ -463,7 +458,7 @@ public class AvlTreeConcrete<AnyType extends Comparable<? super AnyType>>
      * Prints the AVL tree nodes in ascending order.
      * @param t the node to start printing from
      */
-    private void printBalTreeAscending(AvlNode<AnyType> t) {
+    private void printBalTreeAscending(A1233JIsiAvlNode<AnyType> t) {
         if (t == null) return;
         printBalTreeAscending(t.left);
         printNode(t);
@@ -474,7 +469,7 @@ public class AvlTreeConcrete<AnyType extends Comparable<? super AnyType>>
      * Prints the AVL tree nodes in descending order.
      * @param t the node to start printing from
      */
-    private void printBalTreeDescending(AvlNode<AnyType> t) {
+    private void printBalTreeDescending(A1233JIsiAvlNode<AnyType> t) {
         if (t == null) return;
         printBalTreeDescending(t.right);
         printNode(t);
@@ -485,7 +480,7 @@ public class AvlTreeConcrete<AnyType extends Comparable<? super AnyType>>
      * Prints the detailed information of a single node and its children.
      * @param t the node to print
      */
-    private void printNode(AvlNode<AnyType> t) {
+    private void printNode(A1233JIsiAvlNode<AnyType> t) {
         int balance = height(t.right) - height(t.left);
         String nodeStatus = t.isActive ? "Active" : "Inactive";
         System.out.printf("Data: %-15s Height: %-12d Balance: %-12d Status: %-8s\n",
@@ -496,14 +491,16 @@ public class AvlTreeConcrete<AnyType extends Comparable<? super AnyType>>
         System.out.printf("        Right: %-45s\n",
                 t.right != null ? "Data: " + t.right.element : "null");
 
-        AvlNode<AnyType> current = t.next;
+        A1233JIsiAvlNode<AnyType> current = t.next;
         while (current != null) {
             balance = height(current.right) - height(current.left);
             nodeStatus = current.isActive ? "Active" : "Inactive";
+
             System.out.printf("        Duplicate: Data: %-15s Height: %-12d Balance: %-12d Status: %-8s\n",
                     current.element, current.height, balance, nodeStatus);
             current = current.next;
         }
+        System.out.println();
     }
 
     /**
@@ -511,7 +508,7 @@ public class AvlTreeConcrete<AnyType extends Comparable<? super AnyType>>
      * @param t the node to start writing from
      * @param writer the PrintWriter to write to the file
      */
-    private void writeBalTreeAscending(AvlNode<AnyType> t, PrintWriter writer) {
+    private void writeBalTreeAscending(A1233JIsiAvlNode<AnyType> t, PrintWriter writer) {
         if (t == null) return;
         writeBalTreeAscending(t.left, writer);
         writeNode(t, writer);
@@ -523,7 +520,7 @@ public class AvlTreeConcrete<AnyType extends Comparable<? super AnyType>>
      * @param t the node to start writing from
      * @param writer the PrintWriter to write to the file
      */
-    private void writeBalTreeDescending(AvlNode<AnyType> t, PrintWriter writer) {
+    private void writeBalTreeDescending(A1233JIsiAvlNode<AnyType> t, PrintWriter writer) {
         if (t == null) return;
         writeBalTreeDescending(t.right, writer);
         writeNode(t, writer);
@@ -535,7 +532,7 @@ public class AvlTreeConcrete<AnyType extends Comparable<? super AnyType>>
      * @param node the node to write out
      * @param writer the PrintWriter to handle file output
      */
-    private void writeNode(AvlNode<AnyType> node, PrintWriter writer) {
+    private void writeNode(A1233JIsiAvlNode<AnyType> node, PrintWriter writer) {
         int balance = height(node.right) - height(node.left);
         String nodeStatus = node.isActive ? "Active" : "Inactive";
         writer.printf("Data: %-15s Height: %-12d Balance: %-12d Status: %-8s\n",
@@ -546,20 +543,22 @@ public class AvlTreeConcrete<AnyType extends Comparable<? super AnyType>>
         writer.printf("        Right: %-45s\n",
                 node.right != null ? "Data: " + node.right.element : "null");
 
-        AvlNode<AnyType> current = node.next;
-        while (current != null) {
+        A1233JIsiAvlNode<AnyType> current = node.next;
+        while (current != null)
+        {
             balance = height(current.right) - height(current.left);
             nodeStatus = current.isActive ? "Active" : "Inactive";
             writer.printf("        Duplicate: Data: %-15s Height: %-12d Balance: %-12d Status: %-8s\n",
                     current.element, current.height, balance, nodeStatus);
             current = current.next;
         }
+        writer.println();
     }
 
     /**
      * Return the height of node t, or -1, if null.
      */
-    private int height( AvlNode<AnyType> t )
+    private int height( A1233JIsiAvlNode<AnyType> t )
     {
         return t == null ? -1 : t.height;
     }
@@ -569,9 +568,9 @@ public class AvlTreeConcrete<AnyType extends Comparable<? super AnyType>>
      * For AVL trees, this is a single rotation for case 1.
      * Update heights, then return new root.
      */
-    private AvlNode<AnyType> rotateWithLeftChild( AvlNode<AnyType> k2 )
+    private A1233JIsiAvlNode<AnyType> rotateWithLeftChild(A1233JIsiAvlNode<AnyType> k2 )
     {
-        AvlNode<AnyType> k1 = k2.left;
+        A1233JIsiAvlNode<AnyType> k1 = k2.left;
         k2.left = k1.right;
         k1.right = k2;
         k2.height = Math.max( height( k2.left ), height( k2.right ) ) + 1;
@@ -584,14 +583,13 @@ public class AvlTreeConcrete<AnyType extends Comparable<? super AnyType>>
      * For AVL trees, this is a single rotation for case 4.
      * Update heights, then return new root.
      */
-    private AvlNode<AnyType> rotateWithRightChild( AvlNode<AnyType> k1 )
+    private A1233JIsiAvlNode<AnyType> rotateWithRightChild(A1233JIsiAvlNode<AnyType> k1 )
     {
-        AvlNode<AnyType> k2 = k1.right;
+        A1233JIsiAvlNode<AnyType> k2 = k1.right;
         k1.right = k2.left;
         k2.left = k1;
         k1.height = Math.max( height( k1.left ), height( k1.right ) ) + 1;
         k2.height = Math.max( height( k2.right ), k1.height ) + 1;
-
         return k2;
     }
 
@@ -601,7 +599,7 @@ public class AvlTreeConcrete<AnyType extends Comparable<? super AnyType>>
      * For AVL trees, this is a double rotation for case 2.
      * Update heights, then return new root.
      */
-    private AvlNode<AnyType> doubleWithLeftChild( AvlNode<AnyType> k3 )
+    private A1233JIsiAvlNode<AnyType> doubleWithLeftChild(A1233JIsiAvlNode<AnyType> k3 )
     {
         k3.left = rotateWithRightChild( k3.left );
         return rotateWithLeftChild( k3 );
@@ -613,7 +611,7 @@ public class AvlTreeConcrete<AnyType extends Comparable<? super AnyType>>
      * For AVL trees, this is a double rotation for case 3.
      * Update heights, then return new root.
      */
-    private AvlNode<AnyType> doubleWithRightChild( AvlNode<AnyType> k1 )
+    private A1233JIsiAvlNode<AnyType> doubleWithRightChild(A1233JIsiAvlNode<AnyType> k1 )
     {
         k1.right = rotateWithLeftChild( k1.right );
         return rotateWithRightChild( k1 );
@@ -630,8 +628,7 @@ public class AvlTreeConcrete<AnyType extends Comparable<? super AnyType>>
         lastCount = 0;
 
         inOrderTraversal(root);
-
-        return new ModeResult<>(currentMode, modeCount);
+        return new A1233JIsiModeResult<>(currentMode, modeCount);
     }
 
     /**
@@ -639,14 +636,14 @@ public class AvlTreeConcrete<AnyType extends Comparable<? super AnyType>>
      * counts the current node and its duplicates, changing mode count accordingly.
      * @param node the current node to process during traversal
      */
-    private void inOrderTraversal(AvlNode<AnyType> node) {
+    private void inOrderTraversal(A1233JIsiAvlNode<AnyType> node) {
         if (node == null)
             return;
 
         inOrderTraversal(node.left);
         updateMode(node.element, node.isActive);
 
-        AvlNode<AnyType> current = node.next;
+        A1233JIsiAvlNode<AnyType> current = node.next;
         while (current != null)
         {
             updateMode(current.element, current.isActive);
@@ -679,11 +676,11 @@ public class AvlTreeConcrete<AnyType extends Comparable<? super AnyType>>
     /**
      * Implementation of the Result interface
      */
-    private static class ModeResult<AnyType> implements Result<AnyType> {
+    private static class A1233JIsiModeResult<AnyType> implements Result<AnyType> {
         private AnyType mode;
         private int count;
 
-        public ModeResult(AnyType mode, int count)
+        public A1233JIsiModeResult(AnyType mode, int count)
         {
             this.mode = mode;
             this.count = count;
@@ -700,15 +697,15 @@ public class AvlTreeConcrete<AnyType extends Comparable<? super AnyType>>
         }
     }
 
-    private static class AvlNode<AnyType>
+    private static class A1233JIsiAvlNode<AnyType>
     {
             // Constructors
-        AvlNode( AnyType theElement )
+        A1233JIsiAvlNode(AnyType theElement )
         {
             this( theElement, null, null, null);
         }
 
-        AvlNode( AnyType theElement, AvlNode<AnyType> lt, AvlNode<AnyType> rt, AvlNode<AnyType> nt)
+        A1233JIsiAvlNode(AnyType theElement, A1233JIsiAvlNode<AnyType> lt, A1233JIsiAvlNode<AnyType> rt, A1233JIsiAvlNode<AnyType> nt)
         {
             element  = theElement;
             left     = lt;
@@ -718,12 +715,12 @@ public class AvlTreeConcrete<AnyType extends Comparable<? super AnyType>>
             isActive = true;
         }
 
-        AnyType           element;      // The data in the node
-        AvlNode<AnyType>  left;         // Left child
-        AvlNode<AnyType>  right;        // Right child
-        int               height;       // Height
-        boolean           isActive;     // Indicates if node is active
-        AvlNode<AnyType>  next;         // pointers to duplicates
+        AnyType element;      // The data in the node
+        int height;       // Height
+        boolean isActive;     // Indicates if node is active
+        A1233JIsiAvlNode<AnyType> left;         // Left child
+        A1233JIsiAvlNode<AnyType> right;        // Right child
+        A1233JIsiAvlNode<AnyType> next;         // pointer to duplicates
     }
 
     public String author() {
@@ -731,5 +728,5 @@ public class AvlTreeConcrete<AnyType extends Comparable<? super AnyType>>
     }
 
       /** The tree root. */
-    private AvlNode<AnyType> root;
+    private A1233JIsiAvlNode<AnyType> root;
 }
