@@ -11,7 +11,7 @@ import java.util.List;
 //
 // ******************PUBLIC OPERATIONS*********************
 // void insert( x )       --> Insert x
-// void remove( x )       --> Remove x (unimplemented)
+// void remove( x )       --> Lazy Delete x (unimplemented)
 // boolean contains( x )  --> Return true if x is present
 // boolean remove( x )    --> Return true if x was present
 // Comparable findMin( )  --> Return smallest item
@@ -112,8 +112,10 @@ public class A1233JIsiAVL<AnyType extends Comparable<? super AnyType>>
      * @param t the node that roots the subtree.
      * @return the new root of the subtree.
      */
-    private A1233JIsiAvlNode<AnyType> removeAll(A1233JIsiAvlNode<AnyType> t, AnyType key) {
-        if (t == null) return null;
+    private A1233JIsiAvlNode<AnyType> removeAll(A1233JIsiAvlNode<AnyType> t, AnyType key)
+    {
+        if (t == null)
+            return null;
 
         int compareResult = key.compareTo(t.element);
 
@@ -142,7 +144,6 @@ public class A1233JIsiAVL<AnyType extends Comparable<? super AnyType>>
     {
         if( isEmpty( ) )
             throw new UnderflowException();
-
         return findMin( root ).element;
     }
 
@@ -172,7 +173,8 @@ public class A1233JIsiAVL<AnyType extends Comparable<? super AnyType>>
      * @param key the items to search for.
      * @return Collection of items that match the key's class.
      */
-    public List<AnyType> findAll(AnyType key) {
+    public List<AnyType> findAll(AnyType key)
+    {
         List<AnyType> resultList = new ArrayList<>();
         findAll( root, key, resultList);
         return resultList;
@@ -209,7 +211,8 @@ public class A1233JIsiAVL<AnyType extends Comparable<? super AnyType>>
     /**
      * Print active nodes in sorted order.
      */
-    public void printBalTree(boolean ascending) {
+    public void printBalTree(boolean ascending)
+    {
         if (isEmpty())
             System.out.println("The tree is currently empty.");
         else
@@ -299,7 +302,9 @@ public class A1233JIsiAVL<AnyType extends Comparable<? super AnyType>>
      */
     private A1233JIsiAvlNode<AnyType> insert(AnyType x, A1233JIsiAvlNode<AnyType> t )
     {
-        if( t == null )
+        if( x == null)
+            return balance(t);
+        if( t == null)
             return new A1233JIsiAvlNode<>( x, null, null, null);
 
         int compareResult = x.compareTo( t.element );
@@ -458,7 +463,8 @@ public class A1233JIsiAVL<AnyType extends Comparable<? super AnyType>>
      * Prints the AVL tree nodes in ascending order.
      * @param t the node to start printing from
      */
-    private void printBalTreeAscending(A1233JIsiAvlNode<AnyType> t) {
+    private void printBalTreeAscending(A1233JIsiAvlNode<AnyType> t)
+    {
         if (t == null) return;
         printBalTreeAscending(t.left);
         printNode(t);
@@ -469,7 +475,8 @@ public class A1233JIsiAVL<AnyType extends Comparable<? super AnyType>>
      * Prints the AVL tree nodes in descending order.
      * @param t the node to start printing from
      */
-    private void printBalTreeDescending(A1233JIsiAvlNode<AnyType> t) {
+    private void printBalTreeDescending(A1233JIsiAvlNode<AnyType> t)
+    {
         if (t == null) return;
         printBalTreeDescending(t.right);
         printNode(t);
@@ -480,25 +487,31 @@ public class A1233JIsiAVL<AnyType extends Comparable<? super AnyType>>
      * Prints the detailed information of a single node and its children.
      * @param t the node to print
      */
-    private void printNode(A1233JIsiAvlNode<AnyType> t) {
+    private void printNode(A1233JIsiAvlNode<AnyType> t)
+    {
         int balance = height(t.right) - height(t.left);
         String nodeStatus = t.isActive ? "Active" : "Inactive";
         System.out.printf("Data: %-15s Height: %-12d Balance: %-12d Status: %-8s\n",
                 t.element, t.height, balance, nodeStatus);
-
         System.out.printf("        Left: %-45s\n",
                 t.left != null ? "Data: " + t.left.element : "null");
         System.out.printf("        Right: %-45s\n",
                 t.right != null ? "Data: " + t.right.element : "null");
 
+        int duplicateCount = 0;
         A1233JIsiAvlNode<AnyType> current = t.next;
-        while (current != null) {
-            balance = height(current.right) - height(current.left);
+        while (current != null)
+        {
+            duplicateCount++;
             nodeStatus = current.isActive ? "Active" : "Inactive";
-
-            System.out.printf("        Duplicate: Data: %-15s Height: %-12d Balance: %-12d Status: %-8s\n",
-                    current.element, current.height, balance, nodeStatus);
+            System.out.printf("        Duplicate: Data: %-15s Status: %-8s\n",
+                    current.element, nodeStatus);
             current = current.next;
+        }
+
+        if (duplicateCount > 0)
+        {
+            System.out.println("        Total Duplicates: " + duplicateCount);
         }
         System.out.println();
     }
@@ -508,7 +521,8 @@ public class A1233JIsiAVL<AnyType extends Comparable<? super AnyType>>
      * @param t the node to start writing from
      * @param writer the PrintWriter to write to the file
      */
-    private void writeBalTreeAscending(A1233JIsiAvlNode<AnyType> t, PrintWriter writer) {
+    private void writeBalTreeAscending(A1233JIsiAvlNode<AnyType> t, PrintWriter writer)
+    {
         if (t == null) return;
         writeBalTreeAscending(t.left, writer);
         writeNode(t, writer);
@@ -520,7 +534,8 @@ public class A1233JIsiAVL<AnyType extends Comparable<? super AnyType>>
      * @param t the node to start writing from
      * @param writer the PrintWriter to write to the file
      */
-    private void writeBalTreeDescending(A1233JIsiAvlNode<AnyType> t, PrintWriter writer) {
+    private void writeBalTreeDescending(A1233JIsiAvlNode<AnyType> t, PrintWriter writer)
+    {
         if (t == null) return;
         writeBalTreeDescending(t.right, writer);
         writeNode(t, writer);
@@ -532,7 +547,8 @@ public class A1233JIsiAVL<AnyType extends Comparable<? super AnyType>>
      * @param node the node to write out
      * @param writer the PrintWriter to handle file output
      */
-    private void writeNode(A1233JIsiAvlNode<AnyType> node, PrintWriter writer) {
+    private void writeNode(A1233JIsiAvlNode<AnyType> node, PrintWriter writer)
+    {
         int balance = height(node.right) - height(node.left);
         String nodeStatus = node.isActive ? "Active" : "Inactive";
         writer.printf("Data: %-15s Height: %-12d Balance: %-12d Status: %-8s\n",
@@ -543,14 +559,19 @@ public class A1233JIsiAVL<AnyType extends Comparable<? super AnyType>>
         writer.printf("        Right: %-45s\n",
                 node.right != null ? "Data: " + node.right.element : "null");
 
+        int duplicateCount = 0;
         A1233JIsiAvlNode<AnyType> current = node.next;
         while (current != null)
         {
-            balance = height(current.right) - height(current.left);
+            duplicateCount++;
             nodeStatus = current.isActive ? "Active" : "Inactive";
-            writer.printf("        Duplicate: Data: %-15s Height: %-12d Balance: %-12d Status: %-8s\n",
-                    current.element, current.height, balance, nodeStatus);
+            writer.printf("        Duplicate: Data: %-15s Status: %-8s\n",
+                    current.element, nodeStatus);
             current = current.next;
+        }
+        if (duplicateCount > 0)
+        {
+            writer.println("        Total Duplicates: " + duplicateCount);
         }
         writer.println();
     }
@@ -621,7 +642,8 @@ public class A1233JIsiAVL<AnyType extends Comparable<? super AnyType>>
      * Finds the mode (most frequently occurring value) of the AVL tree.
      * @return a Result object containing the mode and its occurrence count.
      */
-    public Result<AnyType> findMode() {
+    public Result<AnyType> findMode()
+    {
         currentMode = null;
         modeCount = 0;
         lastElementSeen = null;
@@ -636,7 +658,8 @@ public class A1233JIsiAVL<AnyType extends Comparable<? super AnyType>>
      * counts the current node and its duplicates, changing mode count accordingly.
      * @param node the current node to process during traversal
      */
-    private void inOrderTraversal(A1233JIsiAvlNode<AnyType> node) {
+    private void inOrderTraversal(A1233JIsiAvlNode<AnyType> node)
+    {
         if (node == null)
             return;
 
@@ -654,7 +677,8 @@ public class A1233JIsiAVL<AnyType extends Comparable<? super AnyType>>
     }
 
 
-    private void updateMode(AnyType element, boolean isActive) {
+    private void updateMode(AnyType element, boolean isActive)
+    {
         if (!isActive)
             return;
 
@@ -676,24 +700,26 @@ public class A1233JIsiAVL<AnyType extends Comparable<? super AnyType>>
     /**
      * Implementation of the Result interface
      */
-    private static class A1233JIsiModeResult<AnyType> implements Result<AnyType> {
-        private AnyType mode;
-        private int count;
+    private static class A1233JIsiModeResult<AnyType extends
+            Comparable<? super AnyType>> implements Result<AnyType>
+    {
+        private AnyType currentMode;
+        private int currentCount;
 
         public A1233JIsiModeResult(AnyType mode, int count)
         {
-            this.mode = mode;
-            this.count = count;
+            currentMode = mode;
+            currentCount = count;
         }
 
         public AnyType mode()
         {
-            return mode;
+            return currentMode;
         }
 
         public int count()
         {
-            return count;
+            return currentCount;
         }
     }
 
@@ -705,7 +731,8 @@ public class A1233JIsiAVL<AnyType extends Comparable<? super AnyType>>
             this( theElement, null, null, null);
         }
 
-        A1233JIsiAvlNode(AnyType theElement, A1233JIsiAvlNode<AnyType> lt, A1233JIsiAvlNode<AnyType> rt, A1233JIsiAvlNode<AnyType> nt)
+        A1233JIsiAvlNode(AnyType theElement, A1233JIsiAvlNode<AnyType> lt,
+                         A1233JIsiAvlNode<AnyType> rt, A1233JIsiAvlNode<AnyType> nt)
         {
             element  = theElement;
             left     = lt;
@@ -723,7 +750,8 @@ public class A1233JIsiAVL<AnyType extends Comparable<? super AnyType>>
         A1233JIsiAvlNode<AnyType> next;         // pointer to duplicates
     }
 
-    public String author() {
+    public String author()
+    {
         return "James Luke C. Isidro";
     }
 

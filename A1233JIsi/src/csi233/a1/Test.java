@@ -10,9 +10,24 @@
 
             for(int i = 0; i < 100; i++)
             {
-                    tree.insert(rand.nextInt(300));
+                    tree.insert(rand.nextInt(12));
             }
             tree.printBalTree(true);
+            tree.insert(null);
+            System.out.println("Count: " + tree.findMode().count() +
+                    " Mode: " + tree.findMode().mode());
+            System.out.println(tree.findMin());
+            System.out.println(tree.findMax());
+
+            for(Integer i: tree.findAll(5))
+                System.out.print(i + ", ");
+            System.out.println();
+            tree.removeAll(5);
+
+            tree.printBalTree(false);
+
+            System.out.println("Count: " + tree.findMode().count() +
+                    " Mode: " + tree.findMode().mode());
 
             System.out.println("Finish");
 
